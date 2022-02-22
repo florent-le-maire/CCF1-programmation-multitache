@@ -12,6 +12,11 @@
 typedef struct Camion{
     int id;
     char state[10];
+    int poid;
+    int destination;
+    int chargement;
+    int meteo;
+    sem_t sem;
 } Camion;
 void *launchCamion (void *camion);
 #endif //TP_THREAD_CAMION_H

@@ -4,5 +4,6 @@
 
 #ifndef TP_THREAD_MAIN_H
 #define TP_THREAD_MAIN_H
-void createThreads(int nb);
+#include <pthread.h>
+void createThreads(int nb,pthread_t tid);
 #endif //TP_THREAD_MAIN_H

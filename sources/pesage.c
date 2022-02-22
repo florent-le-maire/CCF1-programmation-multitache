@@ -8,8 +8,18 @@ void *pesage(void *camion){
     Camion *c = (Camion *)camion;
     pthread_mutex_lock(&mutexPesage);
     strcpy(c->state,"Pesage");
-    printf ("Camion %d en cours de pesage \n", c->id);
-    sleep (2);
+    //printf ("Camion %d en cours de pesage \n", c->id);
+    sleep (1);
     pthread_mutex_unlock (&mutexPesage);
+    return 0;
+}
+
+void *chargement(void *camion){
+    Camion *c = (Camion *)camion;
+    sem_wait (&c->sem);
+    strcpy(c->state,"Loading");
+    //printf ("Camion %d en cours de chargement \n", c->id);
+    sleep (5);
+    sem_post(&c->sem);
     return 0;
 }
