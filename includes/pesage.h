@@ -10,5 +10,5 @@
 #include <unistd.h>
 
 void *pesage(void *camion);
-void *
+
 #endif //TP_THREAD_PESAGE_H
