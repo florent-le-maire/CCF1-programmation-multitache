@@ -1,14 +1,16 @@
-#include <stdio.h>
+
 #include "main.h"
-#include "camion.h"
 
 Camion **tabCamion;
+
 int nb;
 int currentNb;
 int tabTid;
+Random random;
 int main() {
     srand(time(NULL));   // Initialization, should only be called once.
     nb = 2;
+    initRandom(); //Init random logistic number
     currentNb = 0;
     pthread_t tid[2];
     Camion *c[nb];
@@ -19,9 +21,21 @@ int main() {
     for (int i = 0; i < nb; ++i) {
         free(tabCamion[i]);
     }
+    free(random.loadTime);
+    free(random.realWeight);
 
     printf ("fin thread main \n" );
     return EXIT_SUCCESS;
+}
+void initRandom(){
+    double *tabWeight = malloc(sizeof (double )*nb);
+    int *loadTime = malloc(sizeof (int )*nb);
+    for (int i = 0; i < nb; ++i) {
+        tabWeight[i] = (double)((rand()%55)+20)/10;
+        loadTime[i] = ((rand()%5)+5);
+    }
+    random.loadTime = loadTime;
+    random.realWeight = tabWeight;
 }
 
 void createThreads(int nb,pthread_t *tid){
@@ -34,7 +48,7 @@ void createThreads(int nb,pthread_t *tid){
         exit (1);
     }
     for (int i = 1; i < nb+1; i++) {
-        Camion cInit = {.id=i,.state="WaitPesage",.poidReel = (double)((rand()%55)+20)/10,.sem= sem,.end = 0};
+        Camion cInit = {.id=i,.state="WaitPesage",.sem= sem,.end = 0};
         Camion *c = malloc(sizeof (Camion));
         *c = cInit;
         tabCamion[i-1] = c;
@@ -48,7 +62,7 @@ void createThreads(int nb,pthread_t *tid){
 
     }
 
-    pthread_join (tid[0], NULL);//On attend le premier thread 
+    pthread_join (tid[0], NULL);//On attend le premier thread
 
 }
 

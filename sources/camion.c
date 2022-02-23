@@ -3,7 +3,6 @@
 //
 #include "camion.h"
 
-
 void *launchCamion (void *camion)
 {
     Camion *c = (Camion *)camion;
