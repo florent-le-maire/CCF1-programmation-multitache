@@ -9,7 +9,7 @@
 
 void *launchCamion (void *camion);
 
-char *displayCamion(Camion *c);
+char *displayCamion(Truck *c);
 
 
 #endif //TP_THREAD_CAMION_H

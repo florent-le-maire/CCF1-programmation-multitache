@@ -11,7 +11,7 @@
 #include <semaphore.h>
 #include <time.h>
 #include <stdlib.h>
-typedef struct Camion{
+typedef struct Truck{
     int id;
     char state[10];
     double poid;
@@ -20,12 +20,12 @@ typedef struct Camion{
     int meteo;
     sem_t sem;
     int end;
-} Camion;
+} Truck;
 typedef struct Random{
     double *realWeight;//Create tab of weight
     int *loadTime;//Create tab of time
 }Random;
-void *pesage(void *camion);
-void *chargement(void *camion);
+void *pesage(void *truck);
+void *loading(void *truck);
 
 #endif //TP_THREAD_LOGISTIC_H

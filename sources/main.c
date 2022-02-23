@@ -1,11 +1,10 @@
 
 #include "main.h"
 
-Camion **tabCamion;
+Truck **tabCamion;
 
 int nb;
 int currentNb;
-int tabTid;
 Random random;
 int main() {
     srand(time(NULL));   // Initialization, should only be called once.
@@ -13,11 +12,11 @@ int main() {
     initRandom(); //Init random logistic number
     currentNb = 0;
     pthread_t tid[2];
-    Camion *c[nb];
+    Truck *c[nb];
     tabCamion = c;
     createThreads(nb,tid);
 
-    printf("Libere la memoire\n");
+    printf("Free memory\n");
     for (int i = 0; i < nb; ++i) {
         free(tabCamion[i]);
     }
@@ -48,8 +47,8 @@ void createThreads(int nb,pthread_t *tid){
         exit (1);
     }
     for (int i = 1; i < nb+1; i++) {
-        Camion cInit = {.id=i,.state="WaitPesage",.sem= sem,.end = 0};
-        Camion *c = malloc(sizeof (Camion));
+        Truck cInit = {.id=i,.state="WaitPesage",.sem= sem,.end = 0};
+        Truck *c = malloc(sizeof (Truck));
         *c = cInit;
         tabCamion[i-1] = c;
         if (pthread_create(&tid[1], NULL, launchCamion, (void*)c)!= 0)

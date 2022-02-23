@@ -5,21 +5,21 @@
 
 void *launchCamion (void *camion)
 {
-    Camion *c = (Camion *)camion;
+    Truck *c = (Truck *)camion;
 //    printf ("Argument recu %d, state %s tid: %u\n" ,c->id,c->state, (unsigned int)pthread_self());
     pesage(camion);
     strcpy(c->state,"WaitLoad");
-    chargement(camion);
+    loading(camion);
     strcpy(c->state,"WaitDest");
 
     printf ("fin thread %u\n",(unsigned int)pthread_self());
     c->end = 1;
     return NULL;
 }
-char *displayCamion(Camion *c){
+char *displayCamion(Truck *c){
     char test[500];
 
-    printf("Camion : id[%d] state[%s] poid[%f]\n",
+    printf("Truck : id[%d] state[%s] poid[%f]\n",
            c->id, c->state, c->poid);
     return "";
 }
