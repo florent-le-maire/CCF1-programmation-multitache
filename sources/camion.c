@@ -14,5 +14,14 @@ void *launchCamion (void *camion)
     strcpy(c->state,"WaitDest");
 
     printf ("fin thread %u\n",(unsigned int)pthread_self());
+    c->end = 1;
     return NULL;
 }
+char *displayCamion(Camion *c){
+    char test[500];
+
+    printf("Camion : id[%d] state[%s] poid[%f]\n",
+           c->id, c->state, c->poid);
+    return "";
+}
+

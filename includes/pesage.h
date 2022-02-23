@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <semaphore.h>
+#include <time.h>
+#include <stdlib.h>
 
 void *pesage(void *camion);
 void *chargement(void *camion);

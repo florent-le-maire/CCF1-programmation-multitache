@@ -12,11 +12,17 @@
 typedef struct Camion{
     int id;
     char state[10];
-    int poid;
+    double poid;
+    double poidReel;
     int destination;
     int chargement;
     int meteo;
     sem_t sem;
+    int end;
 } Camion;
 void *launchCamion (void *camion);
+
+char *displayCamion(Camion *c);
+
+
 #endif //TP_THREAD_CAMION_H
