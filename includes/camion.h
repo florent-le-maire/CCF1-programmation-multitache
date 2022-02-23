@@ -7,7 +7,7 @@
 
 #include "logistic.h"
 
-void *launchCamion (void *camion);
+void *launchCamion (void *truck);
 
 char *displayCamion(Truck *c);
 

@@ -8,7 +8,7 @@ int currentNb;
 Random random;
 int main() {
     srand(time(NULL));   // Initialization, should only be called once.
-    nb = 2;
+    nb = 6;
     initRandom(); //Init random logistic number
     currentNb = 0;
     pthread_t tid[2];
@@ -67,21 +67,21 @@ void createThreads(int nb,pthread_t *tid){
 
 void *display(void *arg){
     while (displayInfo() == 0){
-        sleep(1);
+        sleep(2);
     }
     printf ("fin thread %u\n",(unsigned int)pthread_self());
     return NULL;
 }
 int displayInfo(){
     int cpt = 0;
+    printf("===============================================\n");
     for (int i = 0; i < currentNb; ++i) {
         if(tabCamion[i]->end == 1){
             cpt ++;
         }
         displayCamion(tabCamion[i]);
     }
-    printf("NB de fin %d\n",cpt);
-    printf("Current NB %d\n",currentNb);
+    printf("===============================================\n");
     if(cpt == nb){
         return 1;
     }

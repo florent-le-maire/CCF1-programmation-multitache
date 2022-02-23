@@ -15,16 +15,26 @@ typedef struct Truck{
     int id;
     char state[10];
     double poid;
-    int destination;
-    int chargement;
+    char destination[5];
     int meteo;
     sem_t sem;
     int end;
 } Truck;
+
 typedef struct Random{
     double *realWeight;//Create tab of weight
     int *loadTime;//Create tab of time
+    int *timeGenerationDest;
+    int *dest;
 }Random;
+
+typedef enum Meteo{
+    PLUIE,
+    NEIGE,
+    BROUILLARD,
+    RAS,
+    VENT
+}Meteo;
 void *pesage(void *truck);
 void *loading(void *truck);
 

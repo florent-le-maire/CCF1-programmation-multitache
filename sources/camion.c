@@ -3,13 +3,13 @@
 //
 #include "camion.h"
 
-void *launchCamion (void *camion)
+void *launchCamion (void *truck)
 {
-    Truck *c = (Truck *)camion;
+    Truck *c = (Truck *)truck;
 //    printf ("Argument recu %d, state %s tid: %u\n" ,c->id,c->state, (unsigned int)pthread_self());
-    pesage(camion);
+    pesage(truck);
     strcpy(c->state,"WaitLoad");
-    loading(camion);
+    loading(truck);
     strcpy(c->state,"WaitDest");
 
     printf ("fin thread %u\n",(unsigned int)pthread_self());
@@ -19,7 +19,7 @@ void *launchCamion (void *camion)
 char *displayCamion(Truck *c){
     char test[500];
 
-    printf("Truck : id[%d] state[%s] poid[%f]\n",
+    printf("Camion %d : %s information : poid[%f]\n",
            c->id, c->state, c->poid);
     return "";
 }
