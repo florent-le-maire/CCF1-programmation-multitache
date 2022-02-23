@@ -5,12 +5,12 @@
 Camion **tabCamion;
 int nb;
 int currentNb;
-
+int tabTid;
 int main() {
     srand(time(NULL));   // Initialization, should only be called once.
     nb = 2;
     currentNb = 0;
-    pthread_t tid;
+    pthread_t tid[2];
     Camion *c[nb];
     tabCamion = c;
     createThreads(nb,tid);
@@ -24,11 +24,11 @@ int main() {
     return EXIT_SUCCESS;
 }
 
-void createThreads(int nb,pthread_t tid){
+void createThreads(int nb,pthread_t *tid){
 
     sem_t sem;
     sem_init (&sem,0,4);
-    if (pthread_create(&tid, NULL, display, (void*)1)!= 0)
+    if (pthread_create(&tid[0], NULL, display, (void*)1)!= 0)
     {
         perror(" erreur pthread_create \n");
         exit (1);
@@ -38,7 +38,7 @@ void createThreads(int nb,pthread_t tid){
         Camion *c = malloc(sizeof (Camion));
         *c = cInit;
         tabCamion[i-1] = c;
-        if (pthread_create(&tid, NULL, launchCamion, (void*)c)!= 0)
+        if (pthread_create(&tid[1], NULL, launchCamion, (void*)c)!= 0)
         {
             perror(" erreur pthread_create \n");
             exit (1);
@@ -48,7 +48,7 @@ void createThreads(int nb,pthread_t tid){
 
     }
 
-    pthread_join (tid, NULL);
+    pthread_join (tid[0], NULL);//On attend le premier thread 
 
 }
 
@@ -60,7 +60,6 @@ void *display(void *arg){
     return NULL;
 }
 int displayInfo(){
-    int t = 0;
     int cpt = 0;
     for (int i = 0; i < currentNb; ++i) {
         if(tabCamion[i]->end == 1){
@@ -68,9 +67,11 @@ int displayInfo(){
         }
         displayCamion(tabCamion[i]);
     }
+    printf("NB de fin %d\n",cpt);
+    printf("Current NB %d\n",currentNb);
     if(cpt == nb){
         return 1;
     }
 
-    return t;
+    return 0;
 }
