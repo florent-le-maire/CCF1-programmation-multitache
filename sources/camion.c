@@ -11,12 +11,7 @@ void *launchCamion (void *truck)
     strcpy(c->state,"WaitLoad");
     loading(truck);
     strcpy(c->state,"WaitDest");
-    int d = -1;
-    do {
-        d = readDestination(c);
-        strcpy(c->state,"GetDest");
-    } while (d == -1);
-
+    readDestination(c);
     strcpy(c->state,"WaitMeteo");
     getMeteo(c);
     strcpy(c->state,"GOOOO");

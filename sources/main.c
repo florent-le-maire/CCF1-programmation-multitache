@@ -7,16 +7,17 @@ int currentNb;
 Random random;
 int main() {
     srand(time(NULL));   // Initialization, should only be called once.
-    nb = 6;
-    initRandom(); //Init random logistic number
-    currentNb = 0;
+    nb = 6; //Nb Camion
+    initRandom(); //Init random struct
+    currentNb = 0; //Nombre de camion actuellement sur le circuit
     pthread_t tid[2];
-    Truck *c[nb];
-    tabCamion = c;
+    Truck *c[nb];//Creation du tableau de camion
+    tabCamion = c;//Formatage de la zone memoire en tableau
 
-    createThreads(nb,tid);
+    createThreads(nb,tid);//Creation du thread
 
     printf("Free memory\n");
+    ////////////////////////////ON LIBERE TOUTES LES ALLOCATIONS DE MEMOIRE
     for (int i = 0; i < nb; ++i) {
         free(tabCamion[i]);
     }
@@ -28,6 +29,7 @@ int main() {
     printf ("fin thread main \n" );
     return EXIT_SUCCESS;
 }
+//CREATION DE TAB WITH RANDOM NUMBER
 void initRandom(){
     sem_t semWrite;
     sem_t semRead;
@@ -62,24 +64,27 @@ void initRandom(){
     random.semWrite = semWrite;
 
 }
+//CREATION DES THREADS
 void createThreads(int nb,pthread_t *tid){
 
+    //INITIALISATION SEM CAMION
     sem_t sem;
-
     sem_init (&sem,0,4);
 
+    //CREATION DU THREAD METEO
     if (pthread_create(&tid[0], NULL, createMeteo, (void*)&nb)!= 0)
     {
         perror(" erreur pthread_create \n");
         exit (1);
     }
+    //CREATION DU THREAD DESTINATION
     if (pthread_create(&tid[0], NULL, creatDestination, (void*)&nb)!= 0)
     {
         perror(" erreur pthread_create \n");
         exit (1);
     }
 
-
+    //CREATION DU THREAD AFFICHAGE
     if (pthread_create(&tid[0], NULL, display, (void*)1)!= 0)
     {
         perror(" erreur pthread_create \n");

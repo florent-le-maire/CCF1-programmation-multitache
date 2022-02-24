@@ -83,15 +83,16 @@ void writeDestination(int value){
 }
 int readDestination(Truck *c){
     sem_wait (&random.semRead);
+    strcpy(c->state,"GetDest");
     sleep(1);
-    if(random.index >= 0){
-        printf("Destination %d\n",random.index);
-        strcpy(c->destination,listDest[random.dest[random.index]]);
-        random.index --;
-        sem_post(&random.semWrite);
-        return 1;
+    while (random.index < 0){
+        sleep(1);
     }
-    printf("Pas de destination\n");
+    printf("Destination %d\n",random.index);
+    strcpy(c->destination,listDest[random.dest[random.index]]);
+    random.index --;
     sem_post(&random.semWrite);
-    return -1;
+    return 1;
+
+
 }
