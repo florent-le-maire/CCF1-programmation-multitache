@@ -45,6 +45,12 @@ void initRandom(){
         destRandom[i] = rand()%6;
         timeGenerationDest[i]= (rand()%9)+1;
     }
+    for (int i = 0; i < 10; ++i) {
+        int vv = rand()%METEO_SIZE;
+        random.meteoRand[i] = vv;
+        //printf("vv is %d\n",vv);
+
+    }
 
     random.loadTime = loadTime;
     random.realWeight = tabWeight;
@@ -62,6 +68,11 @@ void createThreads(int nb,pthread_t *tid){
 
     sem_init (&sem,0,4);
 
+    if (pthread_create(&tid[0], NULL, createMeteo, (void*)&nb)!= 0)
+    {
+        perror(" erreur pthread_create \n");
+        exit (1);
+    }
     if (pthread_create(&tid[0], NULL, creatDestination, (void*)&nb)!= 0)
     {
         perror(" erreur pthread_create \n");

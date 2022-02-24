@@ -20,31 +20,39 @@ typedef struct Truck{
     sem_t sem;
     int end;
 } Truck;
-
-typedef struct Random{
-    double *realWeight;//Create tab of weight
-    int *loadTime;//Create tab of time
-    int *timeGenerationDest;
-    int *destRandom;
-
-    int *dest;
-    int index;
-    sem_t semWrite;
-    sem_t semRead;
-
-}Random;
-
 typedef enum Meteo{
     PLUIE,
     NEIGE,
     BROUILLARD,
     RAS,
-    VENT
+    VENT,
+    METEO_SIZE
 }Meteo;
+
+typedef struct Random{
+    double *realWeight;//Create tab of weight
+    int *loadTime;//Create tab of time
+    //Pour la partie destination
+    int *timeGenerationDest;
+    int *destRandom;
+    int *dest;
+    int index;
+    sem_t semWrite;
+    sem_t semRead;
+    //Pour la meteo
+    Meteo meteo;
+    Meteo meteoRand[10];
+    sem_t semRead2;
+    sem_t semRedac;
+}Random;
+
+
 
 void *pesage(void *truck);
 void *loading(void *truck);
 void *creatDestination(void *t);
 void writeDestination(int value);
 int readDestination(Truck *c);
+void *createMeteo(void *t);
+void getMeteo(Truck *c);
 #endif //TP_THREAD_LOGISTIC_H

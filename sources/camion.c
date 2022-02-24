@@ -17,15 +17,18 @@ void *launchCamion (void *truck)
         strcpy(c->state,"GetDest");
     } while (d == -1);
 
-    printf ("fin thread %u\n",(unsigned int)pthread_self());
+    strcpy(c->state,"WaitMeteo");
+    getMeteo(c);
+    strcpy(c->state,"GOOOO");
+    printf ("fin du thread %u\n",(unsigned int)pthread_self());
     c->end = 1;
     return NULL;
 }
 char *displayCamion(Truck *c){
     char test[500];
 
-    printf("Camion %d : %s information : poid[%f] destination[%s]\n",
-           c->id, c->state, c->poid, c->destination);
+    printf("Camion %d : %s information : poid[%f] destination[%s] meteo[%d]\n",
+           c->id, c->state, c->poid, c->destination,c->meteo);
     return "";
 }
 

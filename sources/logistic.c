@@ -40,7 +40,7 @@ void *loading(void *truck){
 }
 
 void *creatDestination(void *t){
-    int nb = (int)t;
+    int nb = *(int *)t;
     int i = 0;
     while(1){
         int v = i%nb;
@@ -48,6 +48,27 @@ void *creatDestination(void *t){
         sleep(random.timeGenerationDest[v]);
         i++;
     }
+}
+void *createMeteo(void *t){
+    //ECRITURE ICI
+    int i = 0;
+    while(1){
+        sem_wait(&random.semRedac);    // demande accès au buffer
+        random.meteo = random.meteoRand[i%10];
+        printf("Nouvelle meteo %d\n", random.meteo);
+        sem_post(&random.semRead2);    // fin section critique
+        sleep(20);
+        i++;
+    }
+
+}
+void getMeteo(Truck *c){
+    sem_wait(&random.semRead2);
+    c->meteo = random.meteo;
+    printf("Lecture meteo %d\n", random.meteo);
+    //LECTURE ICI
+    sleep(1);
+    sem_post(&random.semRedac);
 }
 void writeDestination(int value){
     sem_wait (&random.semWrite);
