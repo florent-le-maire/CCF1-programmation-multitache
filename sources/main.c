@@ -30,13 +30,12 @@ void initRandom(){
     double *tabWeight = malloc(sizeof (double )*nb);
     int *loadTime = malloc(sizeof (int )*nb);
     for (int i = 0; i < nb; ++i) {
-        tabWeight[i] = (double)((rand()%55)+20)/10;
+        tabWeight[i] = (double)((rand()%11)+4)*0.5;
         loadTime[i] = ((rand()%5)+5);
     }
     random.loadTime = loadTime;
     random.realWeight = tabWeight;
 }
-
 void createThreads(int nb,pthread_t *tid){
 
     sem_t sem;

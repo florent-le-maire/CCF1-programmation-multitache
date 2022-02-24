@@ -9,4 +9,5 @@ void createThreads(int nb,pthread_t *tid);
 int displayInfo();
 void *display(void *arg);
 void initRandom();
+double getStep();
 #endif //TP_THREAD_MAIN_H
