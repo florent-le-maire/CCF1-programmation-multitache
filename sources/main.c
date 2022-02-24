@@ -2,7 +2,6 @@
 #include "main.h"
 
 Truck **tabCamion;
-
 int nb;
 int currentNb;
 Random random;
@@ -14,6 +13,7 @@ int main() {
     pthread_t tid[2];
     Truck *c[nb];
     tabCamion = c;
+
     createThreads(nb,tid);
 
     printf("Free memory\n");
@@ -22,24 +22,53 @@ int main() {
     }
     free(random.loadTime);
     free(random.realWeight);
+    free(random.timeGenerationDest);
+    free(random.destRandom);
 
     printf ("fin thread main \n" );
     return EXIT_SUCCESS;
 }
 void initRandom(){
+    sem_t semWrite;
+    sem_t semRead;
+    sem_init (&semWrite,0,1);
+    sem_init (&semRead,0,1);
     double *tabWeight = malloc(sizeof (double )*nb);
     int *loadTime = malloc(sizeof (int )*nb);
+    int *destRandom = malloc(sizeof (int )*nb);
+    int *timeGenerationDest = malloc(sizeof (int )*nb);
+    int *dest = malloc(sizeof (int )*5);
+
     for (int i = 0; i < nb; ++i) {
         tabWeight[i] = (double)((rand()%11)+4)*0.5;
         loadTime[i] = ((rand()%5)+5);
+        destRandom[i] = rand()%6;
+        timeGenerationDest[i]= (rand()%9)+1;
     }
+
     random.loadTime = loadTime;
     random.realWeight = tabWeight;
+    random.destRandom = destRandom;
+    random.timeGenerationDest = timeGenerationDest;
+    random.dest = dest;
+    random.index = -1;
+    random.semRead = semRead;
+    random.semWrite = semWrite;
+
 }
 void createThreads(int nb,pthread_t *tid){
 
     sem_t sem;
+
     sem_init (&sem,0,4);
+
+    if (pthread_create(&tid[0], NULL, creatDestination, (void*)&nb)!= 0)
+    {
+        perror(" erreur pthread_create \n");
+        exit (1);
+    }
+
+
     if (pthread_create(&tid[0], NULL, display, (void*)1)!= 0)
     {
         perror(" erreur pthread_create \n");

@@ -11,6 +11,11 @@ void *launchCamion (void *truck)
     strcpy(c->state,"WaitLoad");
     loading(truck);
     strcpy(c->state,"WaitDest");
+    int d = -1;
+    do {
+        d = readDestination(c);
+        strcpy(c->state,"GetDest");
+    } while (d == -1);
 
     printf ("fin thread %u\n",(unsigned int)pthread_self());
     c->end = 1;
@@ -19,8 +24,8 @@ void *launchCamion (void *truck)
 char *displayCamion(Truck *c){
     char test[500];
 
-    printf("Camion %d : %s information : poid[%f]\n",
-           c->id, c->state, c->poid);
+    printf("Camion %d : %s information : poid[%f] destination[%s]\n",
+           c->id, c->state, c->poid, c->destination);
     return "";
 }
 

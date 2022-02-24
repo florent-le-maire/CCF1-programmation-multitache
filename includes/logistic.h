@@ -25,7 +25,13 @@ typedef struct Random{
     double *realWeight;//Create tab of weight
     int *loadTime;//Create tab of time
     int *timeGenerationDest;
+    int *destRandom;
+
     int *dest;
+    int index;
+    sem_t semWrite;
+    sem_t semRead;
+
 }Random;
 
 typedef enum Meteo{
@@ -35,7 +41,10 @@ typedef enum Meteo{
     RAS,
     VENT
 }Meteo;
+
 void *pesage(void *truck);
 void *loading(void *truck);
-
+void *creatDestination(void *t);
+void writeDestination(int value);
+int readDestination(Truck *c);
 #endif //TP_THREAD_LOGISTIC_H
