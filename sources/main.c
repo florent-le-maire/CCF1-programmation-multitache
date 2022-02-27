@@ -65,20 +65,20 @@ void initRandom(){
 
 }
 //CREATION DES THREADS
-void createThreads(int nb,pthread_t *tid){
+void createThreads(int nbTruck, pthread_t *tid){
 
     //INITIALISATION SEM CAMION
     sem_t sem;
     sem_init (&sem,0,4);
 
     //CREATION DU THREAD METEO
-    if (pthread_create(&tid[0], NULL, createMeteo, (void*)&nb)!= 0)
+    if (pthread_create(&tid[0], NULL, createMeteo, (void*)&nbTruck) != 0)
     {
         perror(" erreur pthread_create \n");
         exit (1);
     }
     //CREATION DU THREAD DESTINATION
-    if (pthread_create(&tid[0], NULL, creatDestination, (void*)&nb)!= 0)
+    if (pthread_create(&tid[0], NULL, creatDestination, (void*)&nbTruck) != 0)
     {
         perror(" erreur pthread_create \n");
         exit (1);
@@ -90,7 +90,9 @@ void createThreads(int nb,pthread_t *tid){
         perror(" erreur pthread_create \n");
         exit (1);
     }
-    for (int i = 1; i < nb+1; i++) {
+
+    //CREATION DES THREADS CAMION
+    for (int i = 1; i < nbTruck + 1; i++) {
         Truck cInit = {.id=i,.state="WaitPesage",.sem= sem,.end = 0};
         Truck *c = malloc(sizeof (Truck));
         *c = cInit;
@@ -108,10 +110,10 @@ void createThreads(int nb,pthread_t *tid){
     pthread_join (tid[0], NULL);//On attend le premier thread
 
 }
-
+//Thread d'affichage
 void *display(void *arg){
     while (displayInfo() == 0){
-        sleep(2);
+        sleep(1);
     }
     printf ("fin thread %u\n",(unsigned int)pthread_self());
     return NULL;
@@ -120,6 +122,7 @@ int displayInfo(){
     int cpt = 0;
     printf("===============================================\n");
     for (int i = 0; i < currentNb; ++i) {
+        //Permet de savoir quand tout les camions on fini la procédure
         if(tabCamion[i]->end == 1){
             cpt ++;
         }

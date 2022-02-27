@@ -5,7 +5,7 @@
 #ifndef TP_THREAD_MAIN_H
 #define TP_THREAD_MAIN_H
 #include "camion.h"
-void createThreads(int nb,pthread_t *tid);
+void createThreads(int nbTruck, pthread_t *tid);
 int displayInfo();
 void *display(void *arg);
 void initRandom();

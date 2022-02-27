@@ -6,6 +6,7 @@
 pthread_mutex_t mutexPesage =PTHREAD_MUTEX_INITIALIZER;
 extern Random random;
 
+//création de la liste des destination
 char *listDest[] = {
         "Lille",
         "Paris",
@@ -16,6 +17,7 @@ char *listDest[] = {
         "Lyon"
 };
 
+//Fonction pesage avec mutex
 void *pesage(void *truck){
 
     Truck *c = (Truck *)truck;
@@ -26,7 +28,7 @@ void *pesage(void *truck){
     pthread_mutex_unlock (&mutexPesage);
     return 0;
 }
-
+//Fonction chargement avec sem de 4
 void *loading(void *truck){
     int val_sem;
     Truck *c = (Truck *)truck;
@@ -38,10 +40,11 @@ void *loading(void *truck){
     sem_post(&c->sem);
     return 0;
 }
-
+//Thread creation des destination
 void *creatDestination(void *t){
     int nb = *(int *)t;
     int i = 0;
+    //Pour des raison de simplicité nous avons fait une boucle infini
     while(1){
         int v = i%nb;
         writeDestination(random.destRandom[v]);
@@ -64,9 +67,9 @@ void *createMeteo(void *t){
 }
 void getMeteo(Truck *c){
     sem_wait(&random.semRead2);
+    //On affecte la meteo au camion
     c->meteo = random.meteo;
     printf("Lecture meteo %d\n", random.meteo);
-    //LECTURE ICI
     sleep(1);
     sem_post(&random.semRedac);
 }
@@ -74,8 +77,10 @@ void writeDestination(int value){
     sem_wait (&random.semWrite);
     random.index ++;
     if(random.index <= 4){
+        //On associe la case du tableau la valeur
         random.dest[random.index] = value;
     } else{
+        //On empeche l'index de dépasser la valeur du tableau
         random.index = 4;
     }
     printf("Value de index : %d\n",random.index);
@@ -89,10 +94,11 @@ int readDestination(Truck *c){
         sleep(1);
     }
     printf("Destination %d\n",random.index);
+    //On prend la valeur à l'index
     strcpy(c->destination,listDest[random.dest[random.index]]);
+    //Puis on la supprime en décrementent l'index
     random.index --;
     sem_post(&random.semWrite);
     return 1;
-
 
 }

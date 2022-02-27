@@ -2,27 +2,25 @@
 // Created by lemai on 22/02/2022.
 //
 #include "camion.h"
-
+//Fonction création du comportement des camions
 void *launchCamion (void *truck)
 {
-    Truck *c = (Truck *)truck;
-//    printf ("Argument recu %d, state %s tid: %u\n" ,c->id,c->state, (unsigned int)pthread_self());
-    pesage(truck);
-    strcpy(c->state,"WaitLoad");
-    loading(truck);
-    strcpy(c->state,"WaitDest");
-    readDestination(c);
-    strcpy(c->state,"WaitMeteo");
-    getMeteo(c);
-    strcpy(c->state,"GOOOO");
+    Truck *pTruck = (Truck *)truck;
+    pesage(pTruck);
+    strcpy(pTruck->state, "WaitLoad");
+    loading(pTruck);
+    strcpy(pTruck->state, "WaitDest");
+    readDestination(pTruck);
+    strcpy(pTruck->state, "WaitMeteo");
+    getMeteo(pTruck);
+    strcpy(pTruck->state, "GOOOO");
     printf ("fin du thread %u\n",(unsigned int)pthread_self());
-    c->end = 1;
+    pTruck->end = 1;
     return NULL;
 }
+//Fonction pour afficher 1 camion
 char *displayCamion(Truck *c){
-    char test[500];
-
-    printf("Camion %d : %s information : poid[%f] destination[%s] meteo[%d]\n",
+    printf("Camion %d : %s | information : poid[%f] destination[%s] meteo[%d]\n",
            c->id, c->state, c->poid, c->destination,c->meteo);
     return "";
 }
